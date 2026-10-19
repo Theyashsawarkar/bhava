@@ -33,8 +33,6 @@ class Plugin(Base):
     name, title, icon, color = "bhava", "Emoji", "\U000f0785", "yellow"
     layout = "grid"
     grid_columns = 9
-    width = 780
-    height = 500
     preview = True
     preview_width = 240
     placeholder = "Search emoji…   e.g. wind, party, heart"
