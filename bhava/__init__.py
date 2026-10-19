@@ -38,7 +38,7 @@ class Plugin(Base):
     preview = True
     preview_width = 240
     placeholder = "Search emoji…   e.g. wind, party, heart"
-    hints = [Hint("↵", "type it"), Hint("⌃↵", "copy"), Hint("⌃T", "skin tone")]
+    hints = [Hint("Enter", "type it"), Hint("Ctrl+Enter", "copy"), Hint("Ctrl+T", "skin tone")]
     empty_text = "No emoji for that"
 
     def __init__(self, vyom, conf):
