@@ -1,0 +1,8 @@
+# The project website (docs/, GitHub Pages): built by scripts/build-site.py
+name = "bhava"
+sanskrit = "भाव"
+meaning = "feeling"
+tagline = "Emoji picker: a grid with recents first, categories, skin tones, a big preview; types the emoji into the window you were in."
+color = "yellow"
+kind = "a Vyom tool"
+logo = "assets/logo.svg"

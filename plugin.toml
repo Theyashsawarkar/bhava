@@ -1,7 +1,7 @@
 name = "bhava"
 title = "Emoji"
 description = "Emoji picker: a grid with recents first, categories, skin tones, a big preview; types the emoji into the window you were in."
-version = "0.1.3"
+version = "0.1.4"
 vyom = "0.2.5"
 icon = "󰞅"
 color = "yellow"
