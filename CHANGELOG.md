@@ -2,6 +2,13 @@
 
 Newest first. Releases are tags (`vX.Y.Z`).
 
+## v0.2.0 -- 2026-10-24
+
+- Category tabs switch like every Vyom tool's tabs (Vyom 0.3.0): `Ctrl+H` / `Ctrl+L`
+  for the previous / next category, `Ctrl+1..9` and `Ctrl+0` by number. The numbers
+  moved by one: `Ctrl+1` is Recent, `Ctrl+2` All, `Ctrl+0` Symbols (was `Ctrl+0` Recent);
+  Flags is `Ctrl+H` from Recent. Needs Vyom 0.3.0.
+
 ## v0.1.4 -- 2026-10-21
 
 - A website (GitHub Pages, https://theyashsawarkar.github.io/bhava/): the README as a home page, the

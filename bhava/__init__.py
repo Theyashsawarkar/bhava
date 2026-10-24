@@ -18,7 +18,6 @@ from vyom import Plugin as Base
 # keybind: Vyom/emoji | Enter | Type the emoji into the window you were in (and copy it)
 # keybind: Vyom/emoji | Ctrl+Enter | Copy the emoji only
 # keybind: Vyom/emoji | Ctrl+T | Change the skin tone
-# keybind: Vyom/emoji | Ctrl+0..9 | Show recent, all, or one category
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 STATE = "bhava"
@@ -38,14 +37,16 @@ class Plugin(Base):
     placeholder = "Search emoji…   e.g. wind, party, heart"
     hints = [Hint("Enter", "type it"), Hint("Ctrl+Enter", "copy"), Hint("Ctrl+T", "skin tone")]
     empty_text = "No emoji for that"
+    # Category tabs: Ctrl+H/L, Ctrl+1..9 and Ctrl+0 (Vyom); glyphs, so their own class.
+    tabs = [(k, glyph, "Recent" if k == "recent" else "All" if k == "all" else k) for k, glyph in GROUPS]
+    tab_class = "cat"
 
     def __init__(self, vyom, conf):
         super().__init__(vyom, conf)
         with open(os.path.join(HERE, "emoji.json"), encoding="utf-8") as f:
             self.emoji = json.load(f)
         self.by_char = {e["e"]: e for e in self.emoji}
-        self.group = "recent"
-        self.tab_buttons = {}
+        self.tab = "recent"
         self.tone_label = None
 
     def state(self):
@@ -53,20 +54,6 @@ class Plugin(Base):
 
     def header_extra(self):
         box = Gtk.Box(spacing=2)
-        group = None
-        for key, glyph in GROUPS:
-            b = Gtk.ToggleButton(label=glyph)
-            b.add_css_class("cat")
-            b.set_tooltip_text("Recent" if key == "recent" else "All" if key == "all" else key)
-            b.set_can_focus(False)
-            if group is None:
-                group = b
-                b.set_active(True)
-            else:
-                b.set_group(group)
-            b.connect("toggled", lambda btn, k=key: btn.get_active() and self.set_group(k))
-            self.tab_buttons[key] = b
-            box.append(b)
         self.tone_label = Gtk.Button(label=TONE_HANDS[self.state().get("tone", 0)])
         self.tone_label.add_css_class("cat")
         self.tone_label.set_tooltip_text("Skin tone (Ctrl+T)")
@@ -75,18 +62,14 @@ class Plugin(Base):
         box.append(self.tone_label)
         return box
 
-    def set_group(self, key):
-        self.group = key
-        self.refresh()
 
     def opened(self, args):
         super().opened(args)
         # Recent first if there are any, else everything.
         has_recent = bool(self.state().get("recent"))
         key = "recent" if has_recent else "all"
-        if self.tab_buttons and self.group in ("recent", "all"):
-            self.tab_buttons[key].set_active(True)
-            self.group = key
+        if self.tab in ("recent", "all"):
+            self.select_tab(key)
 
     def toned(self, e):
         tone = self.state().get("tone", 0)
@@ -104,12 +87,12 @@ class Plugin(Base):
                     scored.append((-best, i, e))
             scored.sort()
             items = [e for _, _, e in scored]
-        elif self.group == "recent":
+        elif self.tab == "recent":
             items = [self.by_char[c] for c in st.get("recent", []) if c in self.by_char] or self.emoji
-        elif self.group == "all":
+        elif self.tab == "all":
             items = self.emoji
         else:
-            items = [e for e in self.emoji if e["g"] == self.group]
+            items = [e for e in self.emoji if e["g"] == self.tab]
         return [Row(self.toned(e), e["n"], data=e) for e in items[:400]]
 
     def build_preview(self, row):
@@ -153,10 +136,5 @@ class Plugin(Base):
     def key(self, name, row, mods):
         if "ctrl" in mods and name == "t":
             self.cycle_tone()
-            return True
-        if "ctrl" in mods and len(name) == 1 and name.isdigit():
-            i = int(name)
-            if i < len(GROUPS):
-                self.tab_buttons[GROUPS[i][0]].set_active(True)
             return True
         return False
