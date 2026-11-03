@@ -6,6 +6,15 @@
   </picture>
 </p>
 
+<!-- identity -->
+<p align="center">
+  <b>न देवो विद्यते काष्ठे न पाषाणे न मृण्मये ।<br>
+  भावे हि विद्यते देवस्तस्माद्भावो हि कारणम् ॥</b><br>
+  <i>The divine is not in wood, stone or clay; it lives in feeling, so feeling is what matters.</i><br>
+  <sub>Cāṇakya Nīti 8.11 (8.12 in some editions; attribution traditional)</sub>
+</p>
+<!-- /identity -->
+
 <p align="center">
   <b>Emoji picker: a grid with recents first, categories, skin tones, a big preview; types the emoji into the window you were in.</b><br>
   The emoji picker. A tool for <a href="https://github.com/Theyashsawarkar/vyom">Vyom</a>, keyboard-driven panels for Wayland.

@@ -6,3 +6,6 @@ tagline = "Emoji picker: a grid with recents first, categories, skin tones, a bi
 color = "yellow"
 kind = "a Vyom tool"
 logo = "assets/logo.svg"
+shloka = "न देवो विद्यते काष्ठे न पाषाणे न मृण्मये ।\nभावे हि विद्यते देवस्तस्माद्भावो हि कारणम् ॥"
+shloka_meaning = "The divine is not in wood, stone or clay; it lives in feeling, so feeling is what matters."
+shloka_source = "Cāṇakya Nīti 8.11 (8.12 in some editions; attribution traditional)"
