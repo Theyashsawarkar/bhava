@@ -2,7 +2,7 @@
 name = "bhava"
 sanskrit = "भाव"
 meaning = "feeling"
-tagline = "Emoji picker: a grid with recents first, categories, skin tones, a big preview; types the emoji into the window you were in."
+tagline = "Emoji picker: a grid with recents first, a category rail, skin tones per emoji, a big preview and vim keys; types the emoji into the window you were in."
 color = "yellow"
 kind = "a Vyom tool"
 logo = "assets/logo.svg"

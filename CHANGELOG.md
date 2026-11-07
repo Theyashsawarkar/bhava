@@ -2,8 +2,24 @@
 
 Newest first. Releases are tags (`vX.Y.Z`).
 
-## Unreleased
+## v0.3.0 -- 2026-11-07
 
+- Vim modes. It opens in INSERT, where typing searches as before. `Esc` goes to NORMAL:
+  `h` `j` `k` `l` move in the grid, with a count (`5j`, `3l`); `w` / `b` change category;
+  `gg` / `G` first / last; `0` / `$` start / end of the row; `Ctrl+D` / `Ctrl+U` half a page;
+  `Enter` types, `y` copies, `t` or `s` changes the skin tone; `i`, `a` or `/` (a new search)
+  go back to INSERT; `q` or `Esc` closes, so `Esc` twice closes. A pill in the footer says
+  NORMAL (accent) or INSERT (green), with a half-typed count or `g` beside it, and the search
+  box goes quiet in NORMAL. `[plugin.bhava] start_mode = "normal"` opens in NORMAL.
+- A new look: bigger emoji on a calmer grid, the selected one framed in the accent colour; the
+  categories in a rail on the left with their names and numbers; a "found" count while you search.
+- The skin tone is now remembered per emoji, chosen with a visible picker in the preview
+  (`Ctrl+T` cycles it). Your old single setting is the starting tone for the rest.
+- The preview shows the name, the `:shortcode:` and the keywords, the words your search matched in
+  peach, and "Type it" (`Enter`) and "Copy" buttons with their keys.
+- `Ctrl+C` copies the emoji (`Ctrl+Enter` still does).
+- Choosing a category while searching clears the search, so the category shows.
+- Needs Vyom 0.6.0.
 - Every corner is rounded: the website's callouts.
 - A logo and a shloka at the top of the README and the website: every Vayu tool has them now.
 
