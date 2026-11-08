@@ -50,7 +50,7 @@ bhava is the emoji picker for [Vyom](https://github.com/Theyashsawarkar/vyom): o
 ## Features
 
 - Every Unicode 16 emoji in a calm **grid** of big emoji, your recent ones first; where you are is framed in the accent colour.
-- A **category rail** on the left, with names: `Tab` / `Shift+Tab` or `Ctrl` with the number on it.
+- A **category rail** on the left, with names: `Tab` / `Shift+Tab`, or `Ctrl+1`..`Ctrl+9` for the first to the ninth.
 - **Skin tones per emoji**: a visible picker in the preview (`Ctrl+T`, or `t` in normal mode), remembered for that emoji.
 - A big preview with the name, the `:shortcode:`, the code points and the keywords, **the ones your search matched in peach**.
 - `Enter` **types the emoji into the window you were in** (and copies it); `Ctrl+C` (or `Ctrl+Enter`) only copies.

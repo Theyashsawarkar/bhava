@@ -10,8 +10,6 @@
 .plugin-bhava button.bhava-cat.on { background: alpha(@accent, 0.12); color: @text; font-weight: 600;
   box-shadow: inset 3px 0 0 @accent; }
 .plugin-bhava .bhava-cat-glyph { font-size: 16px; min-width: 22px; }
-.plugin-bhava .bhava-cat-num { font-family: "JetBrainsMono Nerd Font"; font-size: 11px; color: @overlay0; }
-.plugin-bhava button.bhava-cat.on .bhava-cat-num { color: @accent; }
 
 /* A calmer grid: bigger emoji, more air, the selection framed in the accent */
 .plugin-bhava flowbox.grid { padding: 4px 14px 12px 14px; }

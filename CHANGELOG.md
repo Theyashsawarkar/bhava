@@ -2,6 +2,11 @@
 
 Newest first. Releases are tags (`vX.Y.Z`).
 
+## v0.3.2 -- 2026-11-08
+
+- The category rail shows names only, no numbers (`Ctrl+1..9` still picks one; the
+  tooltip says which).
+
 ## v0.3.1 -- 2026-11-08
 
 - The footer's NORMAL / INSERT keys come from Vyom's `tab_hints()` (Vyom 0.6.2), so a

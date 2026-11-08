@@ -132,8 +132,6 @@ class Plugin(Base):
             inner = Gtk.Box(spacing=10)
             inner.append(ui.label(glyph, "bhava-cat-glyph"))
             inner.append(ui.label(name, "bhava-cat-name", xalign=0, hexpand=True))
-            if i < 10:
-                inner.append(ui.label(str((i + 1) % 10), "bhava-cat-num"))
             b.set_child(inner)
             b.set_tooltip_text(f"{name} (Ctrl+{(i + 1) % 10})" if i < 10 else f"{name} (Tab)")
             b.connect("clicked", lambda _b, k=key: self.select_tab(k))
