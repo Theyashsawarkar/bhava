@@ -2,6 +2,11 @@
 
 Newest first. Releases are tags (`vX.Y.Z`).
 
+## v0.3.1 -- 2026-11-08
+
+- The footer's NORMAL / INSERT keys come from Vyom's `tab_hints()` (Vyom 0.6.2), so a
+  status message takes their place instead of being squeezed beside them.
+
 ## v0.3.0 -- 2026-11-07
 
 - Vim modes. It opens in INSERT, where typing searches as before. `Esc` goes to NORMAL:

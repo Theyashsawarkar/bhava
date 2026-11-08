@@ -15,7 +15,7 @@ import subprocess
 
 from gi.repository import GLib, Gtk, Pango
 
-from vyom import Row, ui, util
+from vyom import Hint, Row, ui, util
 from vyom import Plugin as Base
 from vyom.panel import keycap_markup
 
@@ -71,7 +71,7 @@ class Plugin(Base):
     preview = True
     preview_width = 260
     placeholder = "Search emoji…   e.g. wind, party, heart"
-    hints = []          # bhava draws its own, per mode
+    hints = []          # per mode: tab_hints()
     empty_text = "No emoji for that"
     # Categories: the panel's tabs (Tab, Ctrl+1..9), drawn as a rail on the left.
     tabs = [(k, glyph, n) for k, glyph, n in GROUPS]
@@ -147,8 +147,6 @@ class Plugin(Base):
         foot = p.status.get_parent()
         self.mode_pill = ui.label("", "bhava-mode", valign=Gtk.Align.CENTER)
         self.pending_label = ui.label("", "bhava-pending", valign=Gtk.Align.CENTER)
-        self.hint_box = Gtk.Box(spacing=16)
-        foot.prepend(self.hint_box)
         foot.prepend(self.pending_label)
         foot.prepend(self.mode_pill)
         p.tab_hint.set_markup(f"{keycap_markup('Tab')} category")
@@ -157,6 +155,9 @@ class Plugin(Base):
         click = Gtk.GestureClick()
         click.connect("pressed", lambda *_: self.mode == "normal" and self.set_mode("insert"))
         p.entry.add_controller(click)
+
+    def tab_hints(self):
+        return [Hint(keys, what) for keys, what in HINTS[self.mode]]
 
     def mark_rail(self):
         for k, b in self.rail_buttons.items():
@@ -180,13 +181,7 @@ class Plugin(Base):
         pill.set_label("NORMAL" if normal else "INSERT")
         pill.remove_css_class("normal" if not normal else "insert")
         pill.add_css_class(mode)
-        child = self.hint_box.get_first_child()
-        while child is not None:
-            nxt = child.get_next_sibling()
-            self.hint_box.remove(child)
-            child = nxt
-        for keys, what in HINTS[mode]:
-            self.hint_box.append(ui.hint_label(keys, what))
+        p.refresh_hints()
         self.esc_hint.set_markup(f"{keycap_markup('Esc')} {'close' if normal else 'normal mode'}")
         self.show_pending()
         p.update_preview()
