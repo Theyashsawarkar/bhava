@@ -70,7 +70,7 @@ class Plugin(Base):
     placeholder = "Search emoji…   e.g. wind, party, heart"
     hints = [Hint("hjkl", "move"), Hint("Enter", "type"), Hint("y", "copy"),
              Hint("t", "skin tone"), Hint("i", "search")]
-    insert_hints = [Hint("Ctrl+J/K", "move"), Hint("Enter", "type"), Hint("Ctrl+Enter", "copy"),
+    insert_hints = [Hint("Ctrl+H/J/K/L", "move"), Hint("Enter", "type"), Hint("Ctrl+Enter", "copy"),
                     Hint("Ctrl+T", "skin tone"), Hint("Esc", "normal mode")]
     modal = True        # Vyom's vim keys (ADR 0008); bhava/vim.py
     start_mode = "insert"

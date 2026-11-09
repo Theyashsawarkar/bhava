@@ -2,6 +2,10 @@
 
 Newest first. Releases are tags (`vX.Y.Z`).
 
+## v0.4.1 -- 2026-11-09
+
+- **`Ctrl+H` / `Ctrl+L` move left / right in the grid while you type** (Vyom 0.7.2), like `Ctrl+J` / `Ctrl+K`; they used to switch the category. Categories are `Tab` / `Shift+Tab`, or `H` / `L` in normal mode. The footer says `Ctrl+H/J/K/L move`.
+
 ## v0.4.0 -- 2026-11-09
 
 - The category rail uses Vyom's new side-rail slot (`build_rail()`, `tabs_in_rail`) instead of reaching into the panel's widgets.
