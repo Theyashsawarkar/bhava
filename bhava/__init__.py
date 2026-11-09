@@ -5,9 +5,10 @@ keywords from wofi-emoji, MIT), your recent ones first, a rail of
 categories on the left, a skin tone remembered per emoji, and a big
 preview. Enter types it into the window you were in (wtype) and copies it.
 
-Vim modes: INSERT types into the search box; NORMAL (Esc) moves around
-the grid with h/j/k/l and friends, letters don't type. Esc in NORMAL
-closes. `[plugin.bhava] start_mode = "normal"` opens in NORMAL.
+Vim modes are Vyom's (ADR 0008): INSERT types into the search box; NORMAL
+(Esc) moves around the grid with h/j/k/l and friends, letters don't type,
+Space is the leader. bhava/vim.py is its keys. `[plugin.bhava] start_mode =
+"normal"` opens in NORMAL.
 """
 import json
 import os
@@ -19,28 +20,29 @@ from vyom import Hint, Row, ui, util
 from vyom import Plugin as Base
 from vyom.panel import keycap_markup
 
-# Both modes
-# keybind: Vyom/bhava | Arrows | Move around the emoji grid
-# keybind: Vyom/bhava | Enter | Send the emoji to the window you were in (types it, and copies it)
-# keybind: Vyom/bhava | Ctrl+C | Copy the emoji only (Ctrl+Enter too)
-# keybind: Vyom/bhava | Ctrl+Enter | Copy the emoji only
-# keybind: Vyom/bhava | Ctrl+T | Cycle the skin tone of this emoji (remembered per emoji)
-# keybind: Vyom/bhava | Tab / Shift+Tab | Switch to the next / previous category
-# keybind: Vyom/bhava | Ctrl+1..9 | Switch to that numbered category (Ctrl+0: the tenth)
-# keybind: Vyom/bhava insert mode | Esc | Enter normal mode (letters stop typing; move with h/j/k/l)
-# NORMAL mode
-# keybind: Vyom/bhava normal mode | h / j / k / l | Move left / down / up / right in the grid (a count first repeats: 5j)
-# keybind: Vyom/bhava normal mode | w / b | Switch to the next / previous category
-# keybind: Vyom/bhava normal mode | gg / G | Jump to the first / last emoji (5gg or 5G: row 5)
-# keybind: Vyom/bhava normal mode | 0 / $ | Jump to the start / end of the row
-# keybind: Vyom/bhava normal mode | Ctrl+D / Ctrl+U | Scroll half a page down / up
-# keybind: Vyom/bhava normal mode | 1..9 | Set a count for the next move (5j, 3l)
-# keybind: Vyom/bhava normal mode | y | Copy the emoji only (yank)
-# keybind: Vyom/bhava normal mode | t / s | Cycle the skin tone of this emoji
-# keybind: Vyom/bhava normal mode | i / a | Enter insert mode (type to search)
-# keybind: Vyom/bhava normal mode | / | Search again (clears the search, insert mode)
-# keybind: Vyom/bhava normal mode | q | Close the panel
-# keybind: Vyom/bhava normal mode | Esc | Close the panel (or cancel a pending count)
+from . import vim
+
+# KEYBINDS (generated from bhava/vim.py by scripts/keybinds.py; don't edit by hand)
+# keybind: Vyom/bhava:insert | Enter | Send the emoji to the window you were in (types it, and copies it)
+# keybind: Vyom/bhava:insert | Ctrl+Enter | Copy the emoji only
+# keybind: Vyom/bhava:insert | Ctrl+t | Cycle the skin tone of this emoji (remembered per emoji)
+# keybind: Vyom/bhava:normal | h | Move left in the row (a count repeats: 3h)
+# keybind: Vyom/bhava:normal | l | Move right in the row (a count repeats: 3l)
+# keybind: Vyom/bhava:normal | j | Move down a row (a count repeats: 5j)
+# keybind: Vyom/bhava:normal | k | Move up a row (a count repeats: 5k)
+# keybind: Vyom/bhava:normal | 0 | Jump to the start of the row
+# keybind: Vyom/bhava:normal | $ | Jump to the end of the row
+# keybind: Vyom/bhava:normal | Enter | Send the emoji to the window you were in (types it, and copies it)
+# keybind: Vyom/bhava:normal | y | Copy the emoji only (yank)
+# keybind: Vyom/bhava:normal | t | Cycle the skin tone of this emoji (remembered per emoji)
+# keybind: Vyom/bhava:normal | H / L | Switch to the previous / next category (w / b too)
+# keybind: Vyom/bhava:normal | g g / G | Jump to the first / last emoji (5gg or 5G: row 5)
+# keybind: Vyom/bhava leader:normal | Space t 1..9 | Switch to that category
+# keybind: Vyom/bhava leader:normal | Space y y | Copy the emoji only
+# keybind: Vyom/bhava leader:normal | Space y c | Copy the emoji's shortcode (:grinning_face:)
+# keybind: Vyom/bhava leader:normal | Space d d | Remove the emoji from Recent
+# END KEYBINDS
+
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 STATE = "bhava"
@@ -53,11 +55,6 @@ GROUPS = [("recent", "🕘", "Recent"), ("all", "✱", "All"), ("Smileys & Emoti
           ("Activities", "⚽", "Activity"), ("Travel & Places", "✈️", "Travel"), ("Objects", "💡", "Objects"),
           ("Symbols", "🔣", "Symbols"), ("Flags", "🏳️", "Flags")]
 NAMES = {k: n for k, _, n in GROUPS}
-HINTS = {
-    "insert": [("Arrows", "move"), ("Enter", "type"), ("Ctrl+C", "copy"), ("Ctrl+T", "skin tone")],
-    "normal": [("hjkl", "move"), ("w/b", "category"), ("Enter", "type"), ("y", "copy"),
-               ("t", "skin tone"), ("i", "search")],
-}
 
 
 def shortcode(e):
@@ -71,7 +68,13 @@ class Plugin(Base):
     preview = True
     preview_width = 260
     placeholder = "Search emoji…   e.g. wind, party, heart"
-    hints = []          # per mode: tab_hints()
+    hints = [Hint("hjkl", "move"), Hint("Enter", "type"), Hint("y", "copy"),
+             Hint("t", "skin tone"), Hint("i", "search")]
+    insert_hints = [Hint("Ctrl+J/K", "move"), Hint("Enter", "type"), Hint("Ctrl+Enter", "copy"),
+                    Hint("Ctrl+T", "skin tone"), Hint("Esc", "normal mode")]
+    modal = True        # Vyom's vim keys (ADR 0008); bhava/vim.py
+    start_mode = "insert"
+    key_groups = vim.GROUPS
     empty_text = "No emoji for that"
     # Categories: the panel's tabs (Tab, Ctrl+1..9), drawn as a rail on the left.
     tabs = [(k, glyph, n) for k, glyph, n in GROUPS]
@@ -83,13 +86,8 @@ class Plugin(Base):
             self.emoji = json.load(f)
         self.by_char = {e["e"]: e for e in self.emoji}
         self.tab = "recent"
-        self.mode = "insert"
-        self.count = ""        # a typed count (NORMAL): "5"
-        self.pending = ""      # a half-typed key (NORMAL): "g"
-        self.dressed = None    # the panel the rail and footer were added to
         self.rail_buttons = {}
         self.found = None
-        self.our_status = False
 
     # ------------------------------------------------------------ state
     def state(self):
@@ -110,15 +108,12 @@ class Plugin(Base):
         self.found.set_visible(False)
         return self.found
 
-    def dress(self):
-        """The rail of categories on the left and the mode pill in the
-        footer, once per panel (Vyom core has no slot for them)."""
+    tabs_in_rail = True        # the rail shows the categories: no tab bar on top
+
+    def build_rail(self):
+        """The rail of categories on the left (Vyom's side-rail slot), once
+        per panel."""
         p = self.panel
-        if p is None or self.dressed is p or getattr(p, "strip_holder", None) is None:
-            return
-        self.dressed = p
-        p.tab_box.set_visible(False)       # the rail shows the categories instead
-        body = p.strip_holder.get_parent().get_parent()
         rail = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=2, homogeneous=True, valign=Gtk.Align.START)
         side = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
         side.add_css_class("bhava-rail")
@@ -133,73 +128,26 @@ class Plugin(Base):
             inner.append(ui.label(glyph, "bhava-cat-glyph"))
             inner.append(ui.label(name, "bhava-cat-name", xalign=0, hexpand=True))
             b.set_child(inner)
-            b.set_tooltip_text(f"{name} (Ctrl+{(i + 1) % 10})" if i < 10 else f"{name} (Tab)")
+            b.set_tooltip_text(f"{name} (Space t {i + 1})" if i < 9 else f"{name} (H / L)")
             b.connect("clicked", lambda _b, k=key: self.select_tab(k))
             self.rail_buttons[key] = b
             rail.append(b)
-        side.set_hexpand(False)    # its labels' hexpand must not widen it
-        body.prepend(side)
-        p.grid.set_column_spacing(6)
-        p.grid.set_row_spacing(6)
-
-        foot = p.status.get_parent()
-        self.mode_pill = ui.label("", "bhava-mode", valign=Gtk.Align.CENTER)
-        self.pending_label = ui.label("", "bhava-pending", valign=Gtk.Align.CENTER)
-        foot.prepend(self.pending_label)
-        foot.prepend(self.mode_pill)
-        p.tab_hint.set_markup(f"{keycap_markup('Tab')} category")
-        self.esc_hint = foot.get_last_child()
-        # Clicking the search box is a way into INSERT too.
-        click = Gtk.GestureClick()
-        click.connect("pressed", lambda *_: self.mode == "normal" and self.set_mode("insert"))
-        p.entry.add_controller(click)
-
-    def tab_hints(self):
-        return [Hint(keys, what) for keys, what in HINTS[self.mode]]
+        if p is not None and getattr(p, "grid", None) is not None:
+            p.grid.set_column_spacing(6)
+            p.grid.set_row_spacing(6)
+        return side
 
     def mark_rail(self):
         for k, b in self.rail_buttons.items():
             (b.add_css_class if k == self.tab else b.remove_css_class)("on")
 
-    def set_mode(self, mode):
-        self.mode = mode
-        self.count = self.pending = ""
-        p = self.panel
-        if p is None or self.dressed is not p:
-            return
-        normal = mode == "normal"
-        e = p.entry
-        e.set_editable(not normal)
-        (e.add_css_class if normal else e.remove_css_class)("bhava-normal")
-        e.set_placeholder_text("Press i to search,  / to start over" if normal else self.placeholder)
-        if not normal:
-            e.grab_focus()
-            e.set_position(-1)
-        pill = self.mode_pill
-        pill.set_label("NORMAL" if normal else "INSERT")
-        pill.remove_css_class("normal" if not normal else "insert")
-        pill.add_css_class(mode)
-        p.refresh_hints()
-        self.esc_hint.set_markup(f"{keycap_markup('Esc')} {'close' if normal else 'normal mode'}")
-        self.show_pending()
-        p.update_preview()
-
-    def show_pending(self):
-        if self.dressed is self.panel and self.panel is not None:
-            text = self.count + self.pending
-            self.pending_label.set_label(text)
-            self.pending_label.set_visible(bool(text))
-
     # ------------------------------------------------------------ lifecycle
     def opened(self, args):
         super().opened(args)
-        self.dress()
         # Recent first if there are any, else everything.
         if self.tab in ("recent", "all"):
             self.select_tab("recent" if self.state().get("recent") else "all")
         self.mark_rail()
-        start = str(self.conf.get("start_mode", "insert")).lower()
-        self.set_mode("normal" if start == "normal" else "insert")
 
     def tab_changed(self, key):
         self.mark_rail()
@@ -246,7 +194,7 @@ class Plugin(Base):
         e = row.data
         st = self.state()
         ch = self.toned(e, st)
-        normal = self.mode == "normal"
+        normal = self.vim_mode() == "normal"
         big = ui.label(ch, "bhava-big")
         big.set_halign(Gtk.Align.CENTER)
         terms = [t for t in (self.panel.query().lower().split() if self.panel else []) if t]
@@ -340,9 +288,10 @@ class Plugin(Base):
             return
         self.set_tone(e, (self.tone_of(e) + 1) % len(TONES))
 
-    def say(self, text):
-        self.set_status(text)
-        self.our_status = True
+    def say(self, text, kind=None):
+        # A passing note: it clears itself, so the footer's keys come back
+        # (before Vyom's keys, the next key press cleared it).
+        self.set_status(text, kind, clear_after=4)
 
     # ------------------------------------------------------------ moving
     def goto(self, i):
@@ -361,99 +310,64 @@ class Plugin(Base):
                 rows = max(1, int(page / (h + 6)) // 2)
         return rows * cols
 
-    def normal_key(self, name, row, mods):
+    # ================================================================ keys
+    # The modes, counts and sequences are Vyom's; bhava/vim.py is its keys.
+    def keys(self, tab):
+        return vim.keys(tab)
+
+    def mode_changed(self, mode):
+        if self.panel is not None:
+            self.panel.update_preview()   # its key caps follow the mode
+
+    def selected(self):
+        return self.panel.selected_row() if self.panel else None
+
+    def v_move(self, times, arg):
+        """Grid moves that stay in their row (h / l) and stop at the edges."""
         p = self.panel
         cols = self.grid_columns
         n = len(p.items)
+        if not n:
+            return
         s = max(p.sel, 0)
-        ctrl = "ctrl" in mods
-        if ctrl:
-            if name in ("d", "u"):
-                self.goto(s + (1 if name == "d" else -1) * self.half_page())
-                return True
-            return False            # Ctrl+1..9, Ctrl+J/K and the rest: the panel's
-        if name in ("Tab", "ISO_Left_Tab", "Up", "Down", "Left", "Right", "Page_Up", "Page_Down", "F11"):
-            self.count = self.pending = ""
-            return False
-        if name in ("Return", "KP_Enter"):
-            self.count = self.pending = ""
-            p.activate(p.sel, mods)
-            return True
-        if name == "Escape":
-            if self.count or self.pending:
-                self.count = self.pending = ""
-                return True
-            self.close()
-            return True
-        # A count: 1..9, then digits (0 alone is "start of row").
-        if name.isdigit() and len(name) == 1 and (name != "0" or self.count):
-            self.count = (self.count + name)[-3:]
-            return True
-        times = int(self.count or 1)
-        had_count = bool(self.count)
-        if self.pending == "g":
-            self.count = self.pending = ""
-            if name == "g":
-                self.goto((times - 1) * cols if had_count else 0)
-            return True
-        self.count = ""
         col = s % cols
-        if name == "h":
+        if arg == "h":
             self.goto(max(s - times, s - col))
-        elif name == "l":
+        elif arg == "l":
             self.goto(min(s + times, s - col + cols - 1, n - 1))
-        elif name == "j":
+        elif arg == "j":
             t = s + times * cols
             last_row_start = (n - 1) - (n - 1) % cols
             self.goto(t if t < n else (n - 1 if last_row_start > s - col else s))
-        elif name == "k":
+        elif arg == "k":
             self.goto(max(s - times * cols, col))
-        elif name == "w":
-            p.step_tab(delta=times)
-        elif name == "b":
-            p.step_tab(delta=-times)
-        elif name == "g":
-            self.pending = "g"
-            self.count = str(times) if had_count else ""
-        elif name == "G":
-            self.goto((times - 1) * cols if had_count else n - 1)
-        elif name == "0":
+        elif arg == "0":
             self.goto(s - col)
-        elif name == "dollar":
+        elif arg == "$":
             self.goto(min(s - col + cols - 1, n - 1))
-        elif name == "y":
-            if row is not None:
-                self.pick(row.data, True)
-        elif name in ("t", "s"):
-            self.cycle_tone(row)
-        elif name in ("i", "a"):
-            self.set_mode("insert")
-        elif name == "slash":
-            p.entry.set_text("")
-            self.set_mode("insert")
-        elif name == "q":
-            self.close()
-        # Anything else: nothing (letters don't type in NORMAL).
-        return True
 
-    def key(self, name, row, mods):
-        if self.panel is None or self.dressed is not self.panel:
-            return False
-        if self.our_status:
-            self.set_status("")
-            self.our_status = False
-        ctrl = "ctrl" in mods
-        if ctrl and name == "t":
-            self.cycle_tone(row)
-            return True
-        if ctrl and name == "c" and row is not None:
-            self.pick(row.data, True)
-            return True
-        if self.mode == "insert":
-            if name == "Escape":
-                self.set_mode("normal")
-                return True
-            return False
-        handled = self.normal_key(name, row, mods)
-        self.show_pending()
-        return handled
+    def v_copy(self, _n, arg):
+        row = self.selected()
+        if row is None:
+            return
+        if arg == "code":
+            util.copy(shortcode(row.data))
+            self.say(f"copied {shortcode(row.data)}", kind="ok")
+            return
+        self.pick(row.data, True)
+
+    def v_tone(self, _n, _a):
+        self.cycle_tone(self.selected())
+
+    def v_forget(self, _n, _a):
+        row = self.selected()
+        if row is None:
+            return
+        st = self.state()
+        if row.data["e"] not in st.get("recent", []):
+            self.say("That emoji isn't in Recent")
+            return
+        st["recent"] = [c for c in st["recent"] if c != row.data["e"]]
+        util.save_state(STATE, st)
+        self.say("Removed it from Recent")
+        self.refresh()

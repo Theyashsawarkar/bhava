@@ -34,13 +34,4 @@
 .plugin-bhava .bhava-tones { margin-top: 6px; }
 .plugin-bhava .bhava-preview button.btn.primary { background: @accent; }
 
-/* Vim modes: NORMAL in the accent, INSERT in green (the word says it too) */
-.plugin-bhava .bhava-mode { font-family: "JetBrainsMono Nerd Font"; font-size: 11px; font-weight: 800;
-  letter-spacing: 1px; padding: 2px 9px; border-radius: 7px; color: @crust; }
-.plugin-bhava .bhava-mode.normal { background: @accent; }
-.plugin-bhava .bhava-mode.insert { background: @green; }
-.plugin-bhava .bhava-pending { font-family: "JetBrainsMono Nerd Font"; font-size: 12px; font-weight: 700;
-  color: @peach; padding: 1px 7px; border-radius: 7px; border: 1px solid alpha(@peach, 0.45); }
-/* NORMAL: the search box looks asleep: no caret, dimmed */
-.plugin-bhava text.query.bhava-normal { caret-color: transparent; color: alpha(@text, 0.5); }
-.plugin-bhava text.query.bhava-normal placeholder { color: alpha(@overlay0, 0.8); font-style: italic; }
+/* The vim modes (pill, keys typed so far, a locked search box) are Vyom's. */

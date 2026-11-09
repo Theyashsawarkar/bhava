@@ -2,6 +2,16 @@
 
 Newest first. Releases are tags (`vX.Y.Z`).
 
+## v0.4.0 -- 2026-11-09
+
+- The category rail uses Vyom's new side-rail slot (`build_rail()`, `tabs_in_rail`) instead of reaching into the panel's widgets.
+- `Space u p` (show or hide the preview) now comes from Vyom core, which also remembers it.
+- **Vim keys** (Vyom 0.7, ADR 0008): NORMAL and INSERT modes, `Space` as the leader with a which-key strip, `?` and `Space ?` list every key, `Space Space` is a palette, counts (`5j`), `gg` / `G`, `H` / `L` for tabs. It opens in INSERT (search-first): type, then `Esc` for NORMAL. Needs Vyom 0.7.0.
+- Its keys are data (`bhava/vim.py`); `scripts/keybinds.py` writes the `# keybind:` lines and the README's key tables from them, and `--check` (CI) fails when they drift.
+- Its own mode machinery is gone: the mode pill, the keys typed so far, counts and `gg` / `G` are Vyom's now (the category rail stays). `H` / `L` switch categories (`w` / `b` still do), `Space t 1..9` jumps to one, `Space y c` copies the shortcode, `Space d d` removes an emoji from Recent, `Space u p` hides the preview.
+- `Ctrl+C` in INSERT copies the search box's text again (`y` copies the emoji).
+- A note in the footer (copied, removed from Recent, no skin tones) clears itself after a few seconds, so the footer's keys come back.
+
 ## v0.3.2 -- 2026-11-08
 
 - The category rail shows names only, no numbers (`Ctrl+1..9` still picks one; the
