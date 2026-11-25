@@ -2,6 +2,11 @@
 
 Newest first. Releases are tags (`vX.Y.Z`).
 
+## Unreleased
+
+- **Spatial look**: category rail and skin tones are pills, the picked emoji brighter glass with a light rim, no left bar.
+- The website has Vayu's Spatial look: graphite glass, a floating navigation bar, near-white for links and the main button, and the tool's own colour only as its signature (the logo's glow, the shloka's line, the release dots). No more all-caps labels.
+
 ## v0.4.1 -- 2026-11-09
 
 - **`Ctrl+H` / `Ctrl+L` move left / right in the grid while you type** (Vyom 0.7.2), like `Ctrl+J` / `Ctrl+K`; they used to switch the category. Categories are `Tab` / `Shift+Tab`, or `H` / `L` in normal mode. The footer says `Ctrl+H/J/K/L move`.
