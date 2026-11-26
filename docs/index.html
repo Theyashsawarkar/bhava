@@ -13,7 +13,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Tiro+Devanagari+Sanskrit&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/site.css">
-<style>:root{--tool:#f3d47f}.backdrop:before{background-image:url("assets/screenshots/bhava.png")}</style>
+<style>:root{--tool:#f3d47f}.backdrop:before{background-image:url("assets/screenshots/bhava.webp")}</style>
 </head>
 <body class="home">
 <div class="backdrop" aria-hidden="true"></div>
@@ -29,14 +29,14 @@
 <div class="cta"><a class="btn primary" href="#install">Install</a><a class="btn" href="https://github.com/Theyashsawarkar/bhava">Source on GitHub</a><a class="btn" href="changelog.html">What's new in v0.4.1</a></div>
 <div class="meta"><span><b>v0.4.1</b> latest</span><span><b>11</b> releases</span><span><b>4</b> decisions recorded</span><span><b>MIT</b> license</span></div>
 </header>
-<figure class="shot"><img src="assets/screenshots/bhava.png" alt="bhava: emoji panel" fetchpriority="high"></figure>
+<figure class="shot"><img src="assets/screenshots/bhava.webp" alt="bhava: the emoji panel with categories on the left, the grid in the middle and the picked emoji large on the right with Type it and Copy" fetchpriority="high"></figure>
 <div class="wrap"><aside class="toc"><b>On this page</b><a class="l2" href="#features">Features</a><a class="l2" href="#install">Install</a><a class="l3" href="#requirements">Requirements</a><a class="l3" href="#install">Install</a><a class="l3" href="#update-and-uninstall">Update and uninstall</a><a class="l2" href="#usage">Usage</a><a class="l3" href="#vim-modes">Vim modes</a><a class="l2" href="#troubleshooting">Troubleshooting</a><a class="l2" href="#the-vyom-family">The Vyom family</a><a class="l2" href="#contributing">Contributing</a><a class="l2" href="#license">License</a></aside><article>
 <blockquote><p><em>Bhava</em> (भाव) is Sanskrit for "feeling, emotion": what an emoji is for: the feeling behind the words.</p></blockquote>
 <p>bhava is the emoji picker for <a href="https://github.com/Theyashsawarkar/vyom">Vyom</a>: one keyboard-driven panel that opens instantly, with live data, a preview and a key for everything. It runs on any compositor with the layer-shell protocol (sway, Hyprland, river, niri, Wayfire, labwc…). In <a href="https://github.com/Theyashsawarkar/vayu">Vayu</a>, the desktop it was built for, it replaces wofi-emoji.</p>
 <h2 id="features"><a class="anchor" href="#features">#</a>Features</h2>
 <ul><li>Every Unicode 16 emoji in a calm <strong>grid</strong> of big emoji, your recent ones first; where you are is framed in the accent colour.</li><li>A <strong>category rail</strong> on the left, with names: <code>Tab</code> / <code>Shift+Tab</code>, or <code>Ctrl+1</code>..<code>Ctrl+9</code> for the first to the ninth.</li><li><strong>Skin tones per emoji</strong>: a visible picker in the preview (<code>Ctrl+T</code>, or <code>t</code> in normal mode), remembered for that emoji.</li><li>A big preview with the name, the <code>:shortcode:</code>, the code points and the keywords, <strong>the ones your search matched in peach</strong>.</li><li><code>Enter</code> <strong>types the emoji into the window you were in</strong> (and copies it); <code>Ctrl+C</code> (or <code>Ctrl+Enter</code>) only copies.</li><li><strong>Vim modes</strong>: type to search in INSERT, <code>Esc</code> for NORMAL, then <code>h</code> <code>j</code> <code>k</code> <code>l</code>, counts, <code>gg</code> / <code>G</code>, <code>y</code> and the <code>Space</code> leader (see <a href="#vim-modes">Vim modes</a>).</li><li>Names and groups from Unicode's emoji-test.txt, keywords from wofi-emoji (MIT): see NOTICE and tools/build-data.py.</li><li>Keyboard first: every action has a key, shown in the footer for the mode you're in; the mouse works too.</li></ul>
 <p align="center">
-  <img alt="bhava in normal mode: the waving hand selected, its skin-tone picker and a count of 5 pending" src="assets/screenshots/bhava-normal.png" width="100%">
+  <img alt="bhava in normal mode after searching wave: the waving hand selected, its skin-tone picker and Type it or Copy" src="assets/screenshots/bhava-normal.webp" width="100%">
 </p>
 <h2 id="install"><a class="anchor" href="#install">#</a>Install</h2>
 <h3 id="requirements"><a class="anchor" href="#requirements">#</a>Requirements</h3>

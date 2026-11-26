@@ -30,7 +30,7 @@
 </p>
 
 <p align="center">
-  <img alt="bhava: emoji panel" src="assets/screenshots/bhava.png" width="100%">
+  <img alt="bhava: the emoji panel with categories on the left, the grid in the middle and the picked emoji large on the right with Type it and Copy" src="assets/screenshots/bhava.webp" width="100%">
 </p>
 
 > *Bhava* (भाव) is Sanskrit for "feeling, emotion": what an emoji is for: the feeling behind the words.
@@ -59,7 +59,7 @@ bhava is the emoji picker for [Vyom](https://github.com/Theyashsawarkar/vyom): o
 - Keyboard first: every action has a key, shown in the footer for the mode you're in; the mouse works too.
 
 <p align="center">
-  <img alt="bhava in normal mode: the waving hand selected, its skin-tone picker and a count of 5 pending" src="assets/screenshots/bhava-normal.png" width="100%">
+  <img alt="bhava in normal mode after searching wave: the waving hand selected, its skin-tone picker and Type it or Copy" src="assets/screenshots/bhava-normal.webp" width="100%">
 </p>
 
 ## Install
